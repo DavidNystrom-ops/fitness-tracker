@@ -4,12 +4,32 @@ import csv
 from datetime import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 FILENAME = "workout_log.csv"
 FOOD_LOG = "food_log.csv"
+GOALS_FILE = "goals.csv"
 
 st.set_page_config(page_title="Fitness Tracker", layout="centered")
 tab1, tab2 = st.tabs(["🏋️ Workout Tracker", "🍽️ Food & Nutrition"])
+
+# Load persistent goals
+def load_goals():
+    if os.path.exists(GOALS_FILE):
+        with open(GOALS_FILE, newline="") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                try:
+                    return int(row[0]), float(row[1])
+                except:
+                    return 2000, 150.0
+    return 2000, 150.0
+
+# Save updated goals
+def save_goals(calories, protein):
+    with open(GOALS_FILE, mode="w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([calories, protein])
 
 # Workout Tracker Tab
 with tab1:
@@ -66,8 +86,11 @@ with tab1:
 with tab2:
     st.header("🍽️ Log Your Meals")
 
+    meal_categories = ["Breakfast", "Lunch", "Dinner", "Snack", "Other"]
+
     with st.form("food_form"):
         meal = st.text_input("Meal description")
+        category = st.selectbox("Category", meal_categories)
         calories = st.number_input("Calories", min_value=0)
         protein = st.number_input("Protein (g)", min_value=0.0, step=0.1)
         submit_food = st.form_submit_button("Log Meal")
@@ -75,18 +98,23 @@ with tab2:
         if submit_food:
             with open(FOOD_LOG, mode="a", newline="") as f:
                 writer = csv.writer(f)
-                writer.writerow([datetime.now().strftime("%Y-%m-%d %H:%M"), meal, calories, protein])
+                writer.writerow([datetime.now().strftime("%Y-%m-%d %H:%M"), meal, category, calories, protein])
             st.success("Meal logged!")
 
     st.subheader("📋 Meal History")
     try:
         food_df = pd.read_csv(FOOD_LOG, header=None)
-        food_df.columns = ["Date", "Meal", "Calories", "Protein"]
+        food_df.columns = ["Date", "Meal", "Category", "Calories", "Protein"]
+
+        filter_cat = st.selectbox("Filter by category (optional)", ["All"] + meal_categories)
+        if filter_cat != "All":
+            food_df = food_df[food_df["Category"] == filter_cat]
+
         st.dataframe(food_df)
     except FileNotFoundError:
         st.info("No meals logged yet.")
 
- st.subheader("🎯 Daily Nutrition Goals")
+    st.subheader("🎯 Daily Nutrition Goals")
 
     default_cal, default_protein = load_goals()
     goal_calories = st.number_input("Set your daily calorie goal", min_value=0, value=default_cal)
@@ -110,5 +138,3 @@ with tab2:
         st.progress(min(total_protein / goal_protein, 1.0))
     except Exception as e:
         st.warning("No meal data available for today.")
-
-
