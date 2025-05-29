@@ -85,3 +85,27 @@ with tab2:
         st.dataframe(food_df)
     except FileNotFoundError:
         st.info("No meals logged yet.")
+
+st.subheader("🎯 Daily Nutrition Goals")
+
+# User sets goals
+goal_calories = st.number_input("Set your daily calorie goal", min_value=0, value=2000)
+goal_protein = st.number_input("Set your daily protein goal (g)", min_value=0.0, value=150.0, step=0.1)
+
+# Sum calories/protein for today
+today = datetime.now().date()
+try:
+    food_df["Date"] = pd.to_datetime(food_df["Date"])
+    today_df = food_df[food_df["Date"].dt.date == today]
+    total_calories = today_df["Calories"].sum()
+    total_protein = today_df["Protein"].sum()
+
+    st.write(f"**Calories today:** {int(total_calories)} / {int(goal_calories)}")
+    st.progress(min(total_calories / goal_calories, 1.0))
+
+    st.write(f"**Protein today:** {round(total_protein, 1)}g / {round(goal_protein, 1)}g")
+    st.progress(min(total_protein / goal_protein, 1.0))
+except Exception as e:
+    st.warning("No meal data available for today.")
+
+
