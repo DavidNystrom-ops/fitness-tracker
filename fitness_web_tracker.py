@@ -2,6 +2,14 @@
 import streamlit as st
 import pandas as pd
 import datetime
+import streamlit as st
+
+# 🔄 Clear cache and rerun button
+if st.button("🔄 Clear Cache and Rerun"):
+    st.cache_data.clear()
+    st.cache_resource.clear()
+    st.rerun()
+
 
 # File to store food log
 FOOD_LOG_FILE = "meal_log.csv"
