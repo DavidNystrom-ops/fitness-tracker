@@ -3,10 +3,7 @@ import streamlit as st
 import pandas as pd
 import datetime
 import streamlit as st
-
-# --- Streamlit App ---
 st.set_page_config(page_title="Fitness Tracker", layout="centered")
-st.title("🏋️‍♂️ Fitness Tracker")
 
 
 # 🔄 Clear cache and rerun button
@@ -49,7 +46,7 @@ def suggest_workout():
     ]
 
 # --- Streamlit App ---
-st.set_page_config(page_title="Fitness Tracker", layout="centered")
+
 st.title("🏋️‍♂️ Fitness Tracker")
 
 tab1, tab2 = st.tabs(["Workout Tracker", "🍔 Food & Nutrition"])
