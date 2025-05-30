@@ -7,8 +7,6 @@ from workout_tracker import workout_tab
 st.set_page_config(page_title="Fitness Tracker", layout="centered")
 
 st.title("🏋️ Workout Tracker")
-with tab1:
-    workout_tab()
 
 
 # Initialize session state
