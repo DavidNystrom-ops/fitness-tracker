@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import datetime
 import altair as alt
-from workout_tracker import workout_tab
+from cc import workout_tab
 
 st.set_page_config(page_title="Fitness Tracker", layout="centered")
 
