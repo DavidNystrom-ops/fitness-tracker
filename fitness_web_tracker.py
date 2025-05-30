@@ -1,30 +1,44 @@
 import streamlit as st
-import streamlit_authenticator as stauth
+import pandas as pd
+import os
 import yaml
+import streamlit_authenticator as stauth
 from yaml.loader import SafeLoader
 
 # Load config
-with open('config.yaml') as file:
+with open("config.yaml") as file:
     config = yaml.load(file, Loader=SafeLoader)
 
-# Auth
+# Setup authenticator
 authenticator = stauth.Authenticate(
     config['credentials'],
     config['cookie']['name'],
     config['cookie']['key'],
-    config['cookie']['expiry_days'])
+    config['cookie']['expiry_days']
+)
 
-name, authentication_status, username = authenticator.login("Login", "main")
+# Login block
+name, authentication_status, username = authenticator.login("Login", location="main")
 
 if authentication_status is False:
     st.error("Username or password is incorrect")
 elif authentication_status is None:
     st.warning("Please enter your username and password")
-elif authentication_status:
-    authenticator.logout("Logout", "sidebar")
-    st.sidebar.success(f"Welcome, {name} 👋")
+else:
+    authenticator.logout("Logout", location="sidebar")
+    st.sidebar.success(f"Welcome {name} 👋")
     st.title("🏋️ Fitness Tracker")
 
+    # Load logs
+    def load_csv(path, columns):
+        if os.path.exists(path):
+            return pd.read_csv(path, parse_dates=["Date"])
+        return pd.DataFrame(columns=columns)
+
+    WORKOUT_LOG = "workout_data.csv"
+    workout_df = load_csv(WORKOUT_LOG, ["Date", "Exercise", "Weight", "Reps", "Sets"])
+
+    st.write("Workout Data", workout_df)
 
     # File paths
     WORKOUT_LOG = "workout_data.csv"
