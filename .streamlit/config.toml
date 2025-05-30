@@ -1,0 +1,9 @@
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
+
+[general]
+# This tells Streamlit which file to run
+mainPage = "fitness_web_tracker.py"
