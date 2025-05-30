@@ -2,10 +2,6 @@ import streamlit as st
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
-import streamlit_authenticator
-import streamlit as st
-
-st.write("Authenticator version:", streamlit_authenticator.__version__)
 
 # Load config
 with open('config.yaml') as file:
