@@ -20,7 +20,8 @@ authenticator = stauth.Authenticate(
 )
 
 # Login
-name, authentication_status, username = authenticator.login(name="Login", location="main")
+name, authentication_status, username = authenticator.login("Login", "main")
+
 
 # Load or initialize logs
 def load_csv(log_path, columns):
