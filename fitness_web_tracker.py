@@ -12,10 +12,9 @@ authenticator = stauth.Authenticate(
     config['credentials'],
     config['cookie']['name'],
     config['cookie']['key'],
-    config['cookie']['expiry_days']
-)
+    config['cookie']['expiry_days'])
 
-name, authentication_status, username = authenticator.login("Login","main")
+name, authentication_status, username = authenticator.login("Login", "main")
 
 if authentication_status is False:
     st.error("Username or password is incorrect")
