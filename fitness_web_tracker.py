@@ -1,17 +1,13 @@
 import streamlit as st
-import pandas as pd
-import datetime
-import altair as alt
-import os
-
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
-# Load credentials
-with open("config.yaml") as file:
+# Load config
+with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
+# Auth
 authenticator = stauth.Authenticate(
     config['credentials'],
     config['cookie']['name'],
@@ -19,32 +15,19 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days']
 )
 
-# Login
-# Login
 name, authentication_status, username = authenticator.login(
     form_name="Login", location="main"
 )
 
-
-
-# Load or initialize logs
-def load_csv(log_path, columns):
-    if os.path.exists(log_path):
-        return pd.read_csv(log_path, parse_dates=["Date"])
-    else:
-        return pd.DataFrame(columns=columns)
-
-# App logic
-if authentication_status == False:
+if authentication_status is False:
     st.error("Username or password is incorrect")
-elif authentication_status == None:
+elif authentication_status is None:
     st.warning("Please enter your username and password")
-else:
+elif authentication_status:
     authenticator.logout("Logout", "sidebar")
     st.sidebar.success(f"Welcome, {name} 👋")
+    st.title("🏋️ Fitness Tracker")
 
-    st.set_page_config(page_title="Fitness Tracker", layout="centered")
-    st.title("🏋️‍♂️ Fitness Tracker")
 
     # File paths
     WORKOUT_LOG = "workout_data.csv"
