@@ -5,17 +5,38 @@ import datetime
 import altair as alt
 import os
 
-st.set_page_config(page_title="Fitness Tracker", layout="centered")
-st.title("🏋️‍♂️ Fitness Tracker")
+import streamlit_authenticator as stauth
+import yaml
+from yaml.loader import SafeLoader
 
-# File paths
-WORKOUT_LOG = "workout_data.csv"
-NUTRITION_LOG = "nutrition_log.csv"
-WATER_LOG = "water_log.csv"
-SLEEP_LOG = "sleep_log.csv"
+# Load credentials
+with open("config.yaml") as file:
+    config = yaml.load(file, Loader=SafeLoader)
 
-# Load or initialize logs
-def load_csv(log_path, columns):
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days']
+)
+
+name, authentication_status, username = authenticator.login("Login", "main")
+
+if authentication_status:
+    authenticator.logout("Logout", "sidebar")
+    st.sidebar.success(f"Welcome, {name} 👋")
+
+    st.set_page_config(page_title="Fitness Tracker", layout="centered")
+    st.title("🏋️‍♂️ Fitness Tracker")
+
+    # File paths
+    WORKOUT_LOG = "workout_data.csv"
+    NUTRITION_LOG = "nutrition_log.csv"
+    WATER_LOG = "water_log.csv"
+    SLEEP_LOG = "sleep_log.csv"
+
+ # Load or initialize logs
+ def load_csv(log_path, columns):
     if os.path.exists(log_path):
         return pd.read_csv(log_path, parse_dates=["Date"])
     else:
