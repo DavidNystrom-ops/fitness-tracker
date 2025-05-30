@@ -42,7 +42,7 @@ elif authentication_status:
     SLEEP_LOG = "sleep_log.csv"
 
  # Load or initialize logs
- def load_csv(log_path, columns):
+  def load_csv(log_path, columns):
     if os.path.exists(log_path):
         return pd.read_csv(log_path, parse_dates=["Date"])
     else:
