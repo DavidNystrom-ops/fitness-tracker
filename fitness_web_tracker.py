@@ -7,6 +7,9 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
+st.set_page_config(page_title="Fitness Tracker", layout="centered")
+st.title("🏋️‍♀️ Fitness Tracker")
+
 # Load credentials
 with open("config.yaml") as file:
     config = yaml.load(file, Loader=SafeLoader)
@@ -29,10 +32,7 @@ else:
     authenticator.logout("Logout", "sidebar")
     st.sidebar.success(f"Welcome, {name} 👋")
 
-    st.set_page_config(page_title="Fitness Tracker", layout="centered")
-    st.title("🏋️‍♀️ Fitness Tracker")
-
-    # Load logs
+        # Load logs
     def load_csv(path, columns):
         if os.path.exists(path):
             return pd.read_csv(path, parse_dates=["Date"])
