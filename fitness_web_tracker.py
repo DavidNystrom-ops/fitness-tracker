@@ -161,3 +161,6 @@ with tab5:
         st.bar_chart(data=weekly_filtered, x="Week", y="Volume")
     else:
         st.info("No workout data yet.")
+import streamlit_authenticator
+st.write("Streamlit Authenticator version:", streamlit_authenticator.__version__)
+
