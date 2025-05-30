@@ -35,7 +35,7 @@ if authentication_status == False:
     st.error("Username or password is incorrect")
 elif authentication_status == None:
     st.warning("Please enter your username and password")
-elif:
+else:
     authenticator.logout("Logout", "sidebar")
     st.sidebar.success(f"Welcome, {name} 👋")
 
