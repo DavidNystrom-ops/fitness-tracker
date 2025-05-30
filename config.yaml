@@ -1,0 +1,11 @@
+credentials:
+  usernames:
+    creator:
+      email: creator@example.com
+      name: Creator
+      password: '$2b$12$F/RZNL2m7qOAUQXknrbr0uqymLkA16kq2cm1F/t7TrK/47pWnQbiC'  # 'Creator2025!'
+
+cookie:
+  name: fitness_tracker_cookie
+  key: some_random_key
+  expiry_days: 30
