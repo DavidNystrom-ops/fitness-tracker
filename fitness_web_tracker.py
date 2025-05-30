@@ -92,7 +92,7 @@ with tab2:
         st.success("Meal logged successfully!")
 
         # Clear inputs
-        st.experimental_rerun()
+        st.rerun()
 
     st.subheader("📋 Meal History")
     food_df = load_food_log()
