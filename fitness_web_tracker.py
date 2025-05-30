@@ -44,7 +44,7 @@ elif authentication_status:
 # Load or initialize logs
 def load_csv(log_path, columns):
 	if os.path.exists(log_path):
-        return pd.read_csv(log_path, parse_dates=["Date"])
+	return pd.read_csv(log_path, parse_dates=["Date"])
 else:
         return pd.DataFrame(columns=columns)
 
