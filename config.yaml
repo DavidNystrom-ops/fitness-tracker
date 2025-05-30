@@ -3,9 +3,9 @@ credentials:
     creator:
       email: creator@example.com
       name: Creator
-      password: '$2b$12$zFzvHhVNo1qY7aG4sK9gIuPCrXkqRoUmYbZ0ZnBhYm7wSTm09UI1q'  # Hashed 'Creator2025!'
+      password: '$2b$12$zFzvHhVNo1qY7aG4sK9gIuPCrXkqRoUmYbZ0ZnBhYm7wSTm09UI1q'  # 'Creator2025!'
 
 cookie:
-  name: some_cookie_name
-  key: some_random_key
-  expiry_days: 365
+  name: my_cookie
+  key: some_secret_key_123
+  expiry_days: 30
