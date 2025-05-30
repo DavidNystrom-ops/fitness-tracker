@@ -20,7 +20,11 @@ authenticator = stauth.Authenticate(
 )
 
 # Login
-name, authentication_status, username = authenticator.login("Login", "main")
+# Login
+name, authentication_status, username = authenticator.login(
+    form_name="Login", location="main"
+)
+
 
 
 # Load or initialize logs
