@@ -22,7 +22,11 @@ authenticator = stauth.Authenticate(
 
 name, authentication_status, username = authenticator.login("Login", "main")
 
-if authentication_status:
+if authentication_status is False:
+    st.error("Username or password is incorrect")
+elif authentication_status is None:
+    st.warning("Please enter your username and password")
+elif authentication_status:
     authenticator.logout("Logout", "sidebar")
     st.sidebar.success(f"Welcome, {name} 👋")
 
