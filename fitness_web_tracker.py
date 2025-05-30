@@ -2,6 +2,10 @@ import streamlit as st
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
+import streamlit_authenticator
+import streamlit as st
+
+st.write("Authenticator version:", streamlit_authenticator.__version__)
 
 # Load config
 with open('config.yaml') as file:
@@ -161,6 +165,4 @@ with tab5:
         st.bar_chart(data=weekly_filtered, x="Week", y="Volume")
     else:
         st.info("No workout data yet.")
-import streamlit_authenticator
-st.write("Streamlit Authenticator version:", streamlit_authenticator.__version__)
 
