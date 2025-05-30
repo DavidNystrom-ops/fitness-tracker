@@ -1,15 +1,16 @@
 import streamlit as st
 import pandas as pd
+import datetime
+import altair as alt
 import os
-import yaml
 import streamlit_authenticator as stauth
+import yaml
 from yaml.loader import SafeLoader
 
-# Load config
+# Load credentials
 with open("config.yaml") as file:
     config = yaml.load(file, Loader=SafeLoader)
 
-# Setup authenticator
 authenticator = stauth.Authenticate(
     config['credentials'],
     config['cookie']['name'],
@@ -17,7 +18,7 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days']
 )
 
-# Login block
+# Login
 name, authentication_status, username = authenticator.login("Login", location="main")
 
 if authentication_status is False:
@@ -25,9 +26,11 @@ if authentication_status is False:
 elif authentication_status is None:
     st.warning("Please enter your username and password")
 else:
-    authenticator.logout("Logout", location="sidebar")
-    st.sidebar.success(f"Welcome {name} 👋")
-    st.title("🏋️ Fitness Tracker")
+    authenticator.logout("Logout", "sidebar")
+    st.sidebar.success(f"Welcome, {name} 👋")
+
+    st.set_page_config(page_title="Fitness Tracker", layout="centered")
+    st.title("🏋️‍♀️ Fitness Tracker")
 
     # Load logs
     def load_csv(path, columns):
@@ -35,26 +38,18 @@ else:
             return pd.read_csv(path, parse_dates=["Date"])
         return pd.DataFrame(columns=columns)
 
-    WORKOUT_LOG = "workout_data.csv"
-    workout_df = load_csv(WORKOUT_LOG, ["Date", "Exercise", "Weight", "Reps", "Sets"])
-
-    st.write("Workout Data", workout_df)
-
     # File paths
     WORKOUT_LOG = "workout_data.csv"
     NUTRITION_LOG = "nutrition_log.csv"
     WATER_LOG = "water_log.csv"
     SLEEP_LOG = "sleep_log.csv"
 
-    # Example: Load one log
-    workout_df = load_csv(WORKOUT_LOG, ["Date", "Exercise", "Weight", "Reps", "Sets"])
-    st.write("Workout Log", workout_df)
+    # Load the logs
+    workout_df = load_csv(WORKOUT_LOG, ["Date", "Exercise", "Weight", "Reps", "Sets", "Volume"])
+    nutrition_df = load_csv(NUTRITION_LOG, ["Date", "Meal", "Protein", "Carbs", "Fats", "Calories"])
+    water_df = load_csv(WATER_LOG, ["Date", "Ounces"])
+    sleep_df = load_csv(SLEEP_LOG, ["Date", "Hours"])
 
-
-workout_df = load_csv(WORKOUT_LOG, ["Date", "Exercise", "Weight", "Reps", "Sets", "Volume"])
-nutrition_df = load_csv(NUTRITION_LOG, ["Date", "Meal", "Protein", "Carbs", "Fats", "Calories"])
-water_df = load_csv(WATER_LOG, ["Date", "Ounces"])
-sleep_df = load_csv(SLEEP_LOG, ["Date", "Hours"])
 
 # Tabs
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Nutrition", "Workout Tracker", "Water", "Sleep", "Progress"])
