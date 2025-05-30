@@ -8,6 +8,8 @@ import os
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
+st.set_page_config(page_title="Fitness Tracker", layout="centered")
+
 
 # Load credentials
 with open("config.yaml") as file:
@@ -30,7 +32,7 @@ elif authentication_status:
     authenticator.logout("Logout", "sidebar")
     st.sidebar.success(f"Welcome, {name} 👋")
 
-    st.set_page_config(page_title="Fitness Tracker", layout="centered")
+   
     st.title("🏋️‍♂️ Fitness Tracker")
 
     # File paths
