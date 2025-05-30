@@ -45,7 +45,7 @@ elif authentication_status:
 def load_csv(log_path, columns):
 	if os.path.exists(log_path):
         return pd.read_csv(log_path, parse_dates=["Date"])
-    else:
+else:
         return pd.DataFrame(columns=columns)
 
 workout_df = load_csv(WORKOUT_LOG, ["Date", "Exercise", "Weight", "Reps", "Sets", "Volume"])
